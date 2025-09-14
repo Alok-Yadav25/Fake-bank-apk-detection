@@ -1,0 +1,115 @@
+{% extends "base.html" %} 
+{% block content %}
+
+<div class="card">
+    <h2>📁 View your previous APK security scans</h2>
+    
+    <!-- Search Bar -->
+<form method="GET" action="{{ url_for('scan_history') }}" class="mb-4" aria-label="Search scan history">
+    <div class="search-container">
+        <input type="search" 
+               name="search" 
+               placeholder="Search by filename or hash..." 
+               value="{{ search_query or '' }}"
+               class="search-input"
+               aria-label="Search scans by filename or hash"
+               autocomplete="off"
+               spellcheck="false">
+        <button type="submit" class="btn btn-primary" aria-label="Search scans">🔍 Search</button>
+        {% if search_query %}
+            <a href="{{ url_for('scan_history') }}" class="btn btn-secondary" aria-label="Clear search">Clear</a>
+        {% endif %}
+    </div>
+</form>
+
+    {% if scans %}
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Filename</th>
+                        <th>Scan Date</th>
+                        <th>Status</th>
+                        <th>Confidence</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for scan in scans %}
+                    <tr>
+                        <td>
+                            <div class="filename-cell">
+                                {{ scan[1][:50] }}{% if scan[1]|length > 50 %}...{% endif %}
+                            </div>
+                        </td>
+                        <td>{{ scan[2] }}</td>
+                        <td>
+                            {% if scan[3] %}
+                                <span class="badge badge-danger">🔴 Malicious</span>
+                            {% else %}
+                                <span class="badge badge-success">✅ Safe</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ (scan[4] * 100)|round }}%</td>
+                        <td>
+                            <div class="action-buttons">
+                                <a href="{{ url_for('results', scan_id=scan[0]) }}" 
+                                   class="btn btn-primary btn-sm">👁️ View</a>
+                                <button onclick="confirmDelete({{ scan[0] }}, '{{ scan[1][:30] }}...')" 
+                                        class="btn btn-danger btn-sm">🗑️ Delete</button>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="empty-state">
+            {% if search_query %}
+                <h3>🔍 No results found for "{{ search_query }}"</h3>
+                <p>Try a different search term or <a href="{{ url_for('scan_history') }}">view all scans</a></p>
+            {% else %}
+                <h3>📱 Upload your first APK to get started</h3>
+                <a href="{{ url_for('upload_file') }}" class="btn btn-primary">Upload APK</a>
+            {% endif %}
+        </div>
+    {% endif %}
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div id="deleteModal" class="modal">
+    <div class="modal-content">
+        <h3>🗑️ Confirm Delete</h3>
+        <p>Are you sure you want to delete the scan for <strong id="fileToDelete"></strong>?</p>
+        <p><small>This action cannot be undone.</small></p>
+        <div class="modal-actions">
+            <button onclick="closeModal()" class="btn btn-secondary">Cancel</button>
+            <form id="deleteForm" method="POST" style="display: inline;">
+                <button type="submit" class="btn btn-danger">Delete</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+function confirmDelete(scanId, filename) {
+    document.getElementById('fileToDelete').textContent = filename;
+    document.getElementById('deleteForm').action = '/delete_scan/' + scanId;
+    document.getElementById('deleteModal').style.display = 'flex';
+}
+
+function closeModal() {
+    document.getElementById('deleteModal').style.display = 'none';
+}
+
+// Close modal when clicking outside
+window.onclick = function(event) {
+    const modal = document.getElementById('deleteModal');
+    if (event.target == modal) {
+        modal.style.display = 'none';
+    }
+}
+</script>
+
+{% endblock %}

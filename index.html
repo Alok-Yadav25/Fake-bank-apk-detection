@@ -1,0 +1,682 @@
+{% extends "base.html" %}
+
+{% block styles %}
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+    
+    /* Hero Section */
+    .hero {
+        background: linear-gradient(135deg, 
+            rgba(13, 17, 23, 0.95) 0%, 
+            rgba(33, 38, 45, 0.9) 50%, 
+            rgba(13, 17, 23, 0.95) 100%),
+            radial-gradient(circle at 30% 40%, rgba(212, 175, 55, 0.1), transparent 50%),
+            radial-gradient(circle at 80% 80%, rgba(255, 215, 0, 0.05), transparent 50%);
+        padding: 8rem 0;
+        position: relative;
+        overflow: hidden;
+        text-align: center;
+        margin-bottom: 5rem;
+        border-radius: 0 0 50px 50px;
+        box-shadow: 0 20px 60px rgba(70, 179, 222, 0.3);
+    }
+    
+    .hero::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: conic-gradient(from 0deg, transparent, rgba(212, 175, 55, 0.1), transparent 30%);
+        animation: rotate 20s linear infinite;
+        z-index: 1;
+    }
+    
+    .hero .container {
+        position: relative;
+        z-index: 2;
+    }
+    
+    @keyframes rotate {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+    }
+    
+    .hero h1 {
+        font-family: 'Orbitron', monospace;
+        font-size: 4.5rem;
+        font-weight: 900;
+        background: linear-gradient(135deg, #FFD700, #FFA500, #FF8C00, #D4AF37);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 2rem;
+        text-shadow: 0 0 50px rgba(212, 175, 55, 0.5);
+        animation: glow 2s ease-in-out infinite alternate;
+        letter-spacing: 3px;
+    }
+    
+    @keyframes glow {
+        from { text-shadow: 0 0 20px rgba(212, 175, 55, 0.5); }
+        to { text-shadow: 0 0 40px rgba(212, 175, 55, 0.8); }
+    }
+    
+    .hero .lead {
+        font-family: 'Space Grotesk', sans-serif;
+        font-size: 1.4rem;
+        font-weight: 400;
+        color: #f0f6fc9b;
+        margin-bottom: 1.5rem;
+        line-height: 1.6;
+    }
+    
+    .hero .lead b {
+        font-family: 'Rajdhani', sans-serif;
+        font-weight: 700;
+        color: #FFD700;
+        font-size: 1.6rem;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+    }
+    
+    .hero .btn {
+        font-family: 'Rajdhani', sans-serif;
+        font-weight: 600;
+        font-size: 1.2rem;
+        padding: 1rem 3rem;
+        margin: 0.5rem;
+        border-radius: 50px;
+        border: 2px solid transparent;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .hero .btn-primary {
+        background: linear-gradient(135deg, #FFD700, #FFA500);
+        color: #0D1117;
+        box-shadow: 0 10px 30px rgba(255, 215, 0, 0.3);
+    }
+    
+    .hero .btn-primary:hover {
+        background: linear-gradient(135deg, #FFA500, #FF8C00);
+        transform: translateY(-5px) scale(1.05);
+        box-shadow: 0 20px 50px rgba(255, 215, 0, 0.5);
+        color: #d1b6d3;
+    }
+    
+    .hero .btn-outline-light {
+        background: transparent;
+        color: #F0F6FC;
+        border: 2px solid #FFD700;
+    }
+    
+    .hero .btn-outline-light:hover {
+        background: rgba(255, 215, 0, 0.1);
+        color: #FFD700;
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(255, 215, 0, 0.2);
+        border-color: #FFD700;
+    }
+    
+    /* Feature Boxes */
+    .feature-box {
+        background: rgba(33, 38, 45, 0.8);
+        padding: 3rem 2rem;
+        border-radius: 25px;
+        text-align: center;
+        height: 100%;
+        border: 2px solid transparent;
+        transition: all 0.4s ease;
+        position: relative;
+        overflow: hidden;
+        backdrop-filter: blur(20px);
+    }
+    
+    .feature-box::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.1), transparent);
+        transition: left 0.6s ease;
+    }
+    
+    .feature-box:hover {
+        transform: translateY(-15px) scale(1.05);
+        border-color: #D4AF37;
+        box-shadow: 0 25px 60px rgba(0, 0, 0, 0.3), 0 0 30px rgba(212, 175, 55, 0.3);
+    }
+    
+    .feature-box:hover::before {
+        left: 100%;
+    }
+    
+    .feature-icon {
+        width: 100px;
+        height: 100px;
+        margin: 0 auto 2rem;
+        background: linear-gradient(135deg, #FFD700, #D4AF37);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 10px 30px rgba(212, 175, 55, 0.3);
+        transition: all 0.3s ease;
+    }
+    
+    .feature-box:hover .feature-icon {
+        transform: scale(1.1) rotate(5deg);
+        box-shadow: 0 15px 40px rgba(212, 175, 55, 0.5);
+    }
+    
+    .feature-icon i {
+        font-size: 2.5rem;
+        color: #0D1117;
+    }
+    
+    .feature-box h3 {
+        font-family: 'Rajdhani', sans-serif;
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: #FFD700;
+        margin-bottom: 1.5rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+    
+    .feature-box p {
+        font-family: 'Space Grotesk', sans-serif;
+        color: #8B949E;
+        line-height: 1.6;
+        font-size: 1rem;
+    }
+    
+    /* How It Works Section */
+    .card {
+        background: rgba(33, 38, 45, 0.9);
+        border: 2px solid rgba(212, 175, 55, 0.2);
+        border-radius: 25px;
+        backdrop-filter: blur(20px);
+        transition: all 0.3s ease;
+    }
+    
+    .card:hover {
+        border-color: #D4AF37;
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+    }
+    
+    .card h2 {
+        font-family: 'Orbitron', monospace;
+        font-weight: 700;
+        color: #FFD700;
+        font-size: 2.5rem;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+    }
+    
+    .step-icon {
+        position: relative;
+        margin-bottom: 2rem;
+    }
+    
+    .step-icon::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 120px;
+        height: 120px;
+        background: radial-gradient(circle, rgba(212, 175, 55, 0.1), transparent 70%);
+        border-radius: 50%;
+        z-index: -1;
+    }
+    
+    .step-icon i {
+        transition: all 0.3s ease;
+        position: relative;
+        z-index: 1;
+    }
+    
+    .card:hover .step-icon i {
+        transform: scale(1.2) rotate(10deg);
+    }
+    
+    .card h4 {
+        font-family: 'Rajdhani', sans-serif;
+        font-weight: 700;
+        color: #FFD700;
+        font-size: 1.5rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 1rem;
+    }
+    
+    .card p {
+        font-family: 'Space Grotesk', sans-serif;
+        color: #8B949E;
+        line-height: 1.5;
+    }
+    
+    /* Statistics Cards */
+    .counter-card {
+        background: rgba(33, 38, 45, 0.9);
+        border: 2px solid transparent;
+        border-radius: 20px;
+        padding: 2.5rem 1.5rem;
+        text-align: center;
+        backdrop-filter: blur(20px);
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        position: relative;
+        overflow: hidden;
+        height: 100%;
+    }
+    
+    .counter-card::before {
+        content: '';
+        position: absolute;
+        top: -2px;
+        left: -2px;
+        right: -2px;
+        bottom: -2px;
+        background: linear-gradient(45deg, #FFD700, #D4AF37, #FFD700);
+        border-radius: 20px;
+        z-index: -1;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+    
+    .counter-card:hover {
+        transform: translateY(-10px) scale(1.05);
+        box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4);
+    }
+    
+    .counter-card:hover::before {
+        opacity: 1;
+    }
+    
+    .counter-card i {
+        margin-bottom: 1.5rem;
+        transition: all 0.3s ease;
+    }
+    
+    .counter-card:hover i {
+        transform: scale(1.2);
+    }
+    
+    .counter-card h3 {
+        font-family: 'Orbitron', monospace;
+        font-size: 3rem;
+        font-weight: 700;
+        color: #FFD700;
+        margin-bottom: 1rem;
+        text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+    }
+    
+    .counter-card p {
+        font-family: 'Rajdhani', sans-serif;
+        font-weight: 500;
+        font-size: 1.1rem;
+        color: #F0F6FC;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin: 0;
+    }
+    
+    /* Color variations for different stats */
+    .stat-scanned { --accent-color: #0DCAF0; }
+    .stat-threats { --accent-color: #DC3545; }
+    .stat-protected { --accent-color: #198754; }
+    .stat-accuracy { --accent-color: #FFC107; }
+    
+    .stat-scanned i { color: var(--accent-color); }
+    .stat-threats i { color: var(--accent-color); }
+    .stat-protected i { color: var(--accent-color); }
+    .stat-accuracy i { color: var(--accent-color); }
+    
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .hero {
+            padding: 4rem 0;
+        }
+        
+        .hero h1 {
+            font-size: 2.5rem;
+            letter-spacing: 1px;
+        }
+        
+        .hero .lead {
+            font-size: 1.1rem;
+        }
+        
+        .hero .btn {
+            font-size: 1rem;
+            padding: 0.8rem 2rem;
+            margin: 0.3rem;
+        }
+        
+        .feature-box {
+            padding: 2rem 1.5rem;
+        }
+        
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+        }
+        
+        .feature-icon i {
+            font-size: 2rem;
+        }
+        
+        .counter-card {
+            margin-bottom: 2rem;
+        }
+    }
+    
+    /* Animation for page load */
+    .fade-in-up {
+        opacity: 0;
+        transform: translateY(50px);
+        animation: fadeInUp 1s ease-out forwards;
+    }
+    
+    @keyframes fadeInUp {
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    /* Stagger animation delays */
+    .feature-box:nth-child(1) { animation-delay: 0.2s; }
+    .feature-box:nth-child(2) { animation-delay: 0.4s; }
+    .feature-box:nth-child(3) { animation-delay: 0.6s; }
+    
+    .counter-card:nth-child(1) { animation-delay: 0.1s; }
+    .counter-card:nth-child(2) { animation-delay: 0.2s; }
+    .counter-card:nth-child(3) { animation-delay: 0.3s; }
+    .counter-card:nth-child(4) { animation-delay: 0.4s; }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<div class="hero fade-in-up">
+    <div class="container">
+        <h1><i class="fas fa-shield-virus me-3"></i>APK SURAKSHASETU</h1>
+        <p class="lead">Protect yourself from malicious banking apps with <span style="color: #FFD700;">advanced AI-powered detection</span></p>
+        <p class="lead"><b>आपकी सुरक्षा हमारी जिम्मेदारी</b></p>
+        <div class="mt-4">
+            <a href="{{ url_for('upload_file') }}" class="btn btn-primary btn-lg">
+                <i class="fas fa-rocket me-2"></i>Scan APK Now
+            </a>
+            <a href="{{ url_for('scan_history') }}" class="btn btn-outline-light btn-lg">
+                <i class="fas fa-chart-line me-2"></i>View Analytics
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Features Section -->
+<div class="row mb-5">
+    <div class="col-md-4 mb-4">
+        <div class="feature-box fade-in-up">
+            <div class="feature-icon">
+                <i class="fas fa-microscope"></i>
+            </div>
+            <h3>Deep Analysis</h3>
+            <p>Advanced static and dynamic analysis of APK files including permissions, code patterns, certificates, and behavioral indicators</p>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="feature-box fade-in-up">
+            <div class="feature-icon">
+                <i class="fas fa-brain"></i>
+            </div>
+            <h3>AI Detection</h3>
+            <p>Cutting-edge machine learning algorithms trained on millions of samples to identify sophisticated malicious patterns</p>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="feature-box fade-in-up">
+            <div class="feature-icon">
+                <i class="fas fa-bolt"></i>
+            </div>
+            <h3>Lightning Fast</h3>
+            <p>Get comprehensive security analysis results in seconds with detailed threat reports and actionable recommendations</p>
+        </div>
+    </div>
+</div>
+
+<!-- How It Works -->
+<div class="card mb-5 fade-in-up">
+    <div class="card-body py-5">
+        <h2 class="text-center mb-5">
+            <i class="fas fa-cogs me-3"></i>How It Works
+        </h2>
+        <div class="row">
+            <div class="col-md-3 text-center mb-4">
+                <div class="step-icon">
+                    <i class="fas fa-cloud-upload-alt fa-4x text-primary mb-3"></i>
+                </div>
+                <h4>1. Upload</h4>
+                <p>Securely upload your APK file for comprehensive analysis</p>
+            </div>
+            <div class="col-md-3 text-center mb-4">
+                <div class="step-icon">
+                    <i class="fas fa-search-plus fa-4x text-info mb-3"></i>
+                </div>
+                <h4>2. Analyze</h4>
+                <p>Our system performs deep code analysis and permission scanning</p>
+            </div>
+            <div class="col-md-3 text-center mb-4">
+                <div class="step-icon">
+                    <i class="fas fa-robot fa-4x text-warning mb-3"></i>
+                </div>
+                <h4>3. AI Detect</h4>
+                <p>Advanced AI models evaluate threat patterns and risk levels</p>
+            </div>
+            <div class="col-md-3 text-center mb-4">
+                <div class="step-icon">
+                    <i class="fas fa-file-shield fa-4x text-success mb-3"></i>
+                </div>
+                <h4>4. Report</h4>
+                <p>Receive detailed security analysis with actionable insights</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Statistics -->
+<div class="row">
+    <div class="col-md-3 col-sm-6 mb-4">
+        <div class="counter-card stat-scanned fade-in-up">
+            <i class="fas fa-shield-check fa-4x mb-3"></i>
+            <h3 class="counter" data-target="150">0</h3>
+            <p>APKs Scanned</p>
+        </div>
+    </div>
+    <div class="col-md-3 col-sm-6 mb-4">
+        <div class="counter-card stat-threats fade-in-up">
+            <i class="fas fa-virus-slash fa-4x mb-3"></i>
+            <h3 class="counter" data-target="250">0</h3>
+            <p>Threats Blocked</p>
+        </div>
+    </div>
+    <div class="col-md-3 col-sm-6 mb-4">
+        <div class="counter-card stat-protected fade-in-up">
+            <i class="fas fa-users-shield fa-4x mb-3"></i>
+            <h3 class="counter" data-target="150">0</h3>
+            <p>Users Protected</p>
+        </div>
+    </div>
+    <div class="col-md-3 col-sm-6 mb-4">
+        <div class="counter-card stat-accuracy fade-in-up">
+            <i class="fas fa-bullseye fa-4x mb-3"></i>
+            <h3><span class="counter" data-target="90">0</span>%</h3>
+            <p>Accuracy Rate</p>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Enhanced Counter Animation with easing
+    function animateCounters() {
+        const counters = document.querySelectorAll('.counter');
+        
+        const observerOptions = {
+            threshold: 0.5,
+            rootMargin: '0px 0px -100px 0px'
+        };
+        
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const counter = entry.target;
+                    const target = parseInt(counter.getAttribute('data-target'));
+                    const duration = 2500; // 2.5 seconds
+                    const step = (timestamp, startTime, startValue) => {
+                        if (!startTime) startTime = timestamp;
+                        const progress = Math.min((timestamp - startTime) / duration, 1);
+                        
+                        // Easing function for smooth animation
+                        const easeOutQuart = 1 - Math.pow(1 - progress, 4);
+                        const current = Math.floor(startValue + (target * easeOutQuart));
+                        
+                        counter.textContent = current;
+                        
+                        if (progress < 1) {
+                            requestAnimationFrame(ts => step(ts, startTime, startValue));
+                        } else {
+                            counter.textContent = target;
+                            // Add golden glow effect when animation completes
+                            counter.style.textShadow = '0 0 30px rgba(255, 215, 0, 0.8)';
+                            setTimeout(() => {
+                                counter.style.textShadow = '0 0 20px rgba(255, 215, 0, 0.5)';
+                            }, 1000);
+                        }
+                    };
+                    
+                    requestAnimationFrame(ts => step(ts, null, 0));
+                    observer.unobserve(counter);
+                }
+            });
+        }, observerOptions);
+        
+        counters.forEach(counter => {
+            observer.observe(counter);
+        });
+    }
+    
+    // Initialize animations when page loads
+    document.addEventListener('DOMContentLoaded', function() {
+        // Trigger counter animation
+        setTimeout(animateCounters, 500);
+        
+        // Add stagger effect to fade-in elements
+        const fadeElements = document.querySelectorAll('.fade-in-up');
+        fadeElements.forEach((element, index) => {
+            element.style.animationDelay = `${index * 0.1}s`;
+            element.classList.add('fade-in-up');
+        });
+        
+        // Add parallax effect to hero background
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const hero = document.querySelector('.hero');
+            if (hero) {
+                hero.style.transform = `translateY(${scrolled * 0.5}px)`;
+            }
+        });
+        
+        // Enhanced hover effects for feature boxes
+        const featureBoxes = document.querySelectorAll('.feature-box');
+        featureBoxes.forEach(box => {
+            box.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-15px) scale(1.05)';
+                // Add particle effect
+                createHoverParticles(this);
+            });
+            
+            box.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+        
+        // Enhanced button interactions
+        const buttons = document.querySelectorAll('.btn');
+        buttons.forEach(button => {
+            button.addEventListener('click', function(e) {
+                // Ripple effect
+                const ripple = document.createElement('span');
+                const rect = this.getBoundingClientRect();
+                const size = Math.max(rect.width, rect.height);
+                const x = e.clientX - rect.left - size / 2;
+                const y = e.clientY - rect.top - size / 2;
+                
+                ripple.style.width = ripple.style.height = size + 'px';
+                ripple.style.left = x + 'px';
+                ripple.style.top = y + 'px';
+                ripple.classList.add('ripple');
+                
+                this.appendChild(ripple);
+                setTimeout(() => ripple.remove(), 600);
+            });
+        });
+    });
+    
+    // Create hover particle effects
+    function createHoverParticles(element) {
+        for (let i = 0; i < 5; i++) {
+            const particle = document.createElement('div');
+            particle.style.position = 'absolute';
+            particle.style.width = '4px';
+            particle.style.height = '4px';
+            particle.style.background = '#FFD700';
+            particle.style.borderRadius = '50%';
+            particle.style.pointerEvents = 'none';
+            particle.style.zIndex = '1000';
+            
+            const rect = element.getBoundingClientRect();
+            particle.style.left = (rect.left + Math.random() * rect.width) + 'px';
+            particle.style.top = (rect.top + Math.random() * rect.height) + 'px';
+            
+            document.body.appendChild(particle);
+            
+            particle.animate([
+                { transform: 'translateY(0px)', opacity: 1 },
+                { transform: 'translateY(-50px)', opacity: 0 }
+            ], {
+                duration: 1000,
+                easing: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)'
+            }).onfinish = () => particle.remove();
+        }
+    }
+</script>
+
+<style>
+    .ripple {
+        position: absolute;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.3);
+        transform: scale(0);
+        animation: ripple-animation 0.6s ease-out;
+        pointer-events: none;
+    }
+    
+    @keyframes ripple-animation {
+        to {
+            transform: scale(4);
+            opacity: 0;
+        }
+    }
+</style>
+{% endblock %}
